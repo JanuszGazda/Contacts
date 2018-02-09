@@ -1,33 +1,43 @@
 package com.janusz.Entity;
 
-
+import javax.persistence.*;
 import java.util.Date;
+
+@Entity
+@Table(name = "person")
+//@EntityListeners(AuditingEntityListener.class)
 
 public class Person {
 
-    private String name, surname, pesel;
+    @Id
+    @Column(name="pesel")
+    private Long pesel;
+
+    @Column(name="name")
+    private String name;
+
+    @Column(name="surname")
+    private String surname;
+
+    @Column(name="sex")
     private boolean sex;
-    private Contact contact;
+
+    //private Contact contact;
+
+    @Column(name="date")
+    @Temporal(TemporalType.DATE)
     private Date date;
 
-    public Person(String name, String surname, String pesel, boolean sex, Date date, Contact contact){
+    public Person(String name, String surname, Long pesel, boolean sex, Date date){
         this.name=name;
         this.surname=surname;
         this.pesel=pesel;
         this.sex=sex;
         this.date=date;
-        this.contact=contact;
+        //this.contact=contact;
     }
 
     public Person(){}
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
 
     public String getName() {
         return name;
@@ -45,11 +55,11 @@ public class Person {
         this.surname = surname;
     }
 
-    public String getPesel() {
+    public Long getPesel() {
         return pesel;
     }
 
-    public void setPesel(String pesel) {
+    public void setPesel(Long pesel) {
         this.pesel = pesel;
     }
 
@@ -68,8 +78,5 @@ public class Person {
     public void setDate(Date date) {
         this.date = date;
     }
-
-
-
 
 }

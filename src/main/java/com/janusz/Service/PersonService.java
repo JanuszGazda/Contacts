@@ -1,24 +1,36 @@
 package com.janusz.Service;
 
 
-import com.janusz.Dao.PersonDao;
 import com.janusz.Entity.Person;
+import com.janusz.Repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PersonService {
 
     @Autowired
-    private PersonDao personDao;
+    PersonRepository personRepository;
 
-    public Collection<Person> getAllPersons(){
-        return personDao.getAllPersons();
+
+    public List<Person> getAllPersons(){
+        List<Person> persons = new ArrayList<>();
+        personRepository.findAll().forEach(persons::add);
+        return persons;
     }
 
-    public Person getPersonById(int id){
-        return this.personDao.getPersonById(id);
+    public Person getPersonById(Long id){
+        return personRepository.findOne(id);
+    }
+
+    public void addPerson(Person person){
+        personRepository.save(person);
+    }
+
+    public void deletePerson(Long id){
+        personRepository.delete(id);
     }
 }
