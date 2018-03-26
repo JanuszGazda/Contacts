@@ -2,10 +2,10 @@ package com.janusz.Entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "person")
-//@EntityListeners(AuditingEntityListener.class)
 
 public class Person {
 
@@ -22,7 +22,8 @@ public class Person {
     @Column(name="sex")
     private boolean sex;
 
-    //private Contact contact;
+    @OneToMany(mappedBy = "person")
+    private Set<Contact> contact = new HashSet<>();
 
     @Column(name="date")
     @Temporal(TemporalType.DATE)
