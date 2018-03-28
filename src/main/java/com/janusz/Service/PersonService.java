@@ -6,10 +6,15 @@ import com.janusz.Repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class PersonService {
 
     @Autowired
@@ -26,7 +31,7 @@ public class PersonService {
         return personRepository.findOne(id);
     }
 
-    public void addPerson(Person person){
+    public void savePerson(Person person) throws ParseException {
         personRepository.save(person);
     }
 
@@ -34,7 +39,9 @@ public class PersonService {
         personRepository.delete(id);
     }
 
-    public void updatePerson(Long id){
-        //personRepository.;
+    public Date formatDate(String date) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
     }
+
+
 }

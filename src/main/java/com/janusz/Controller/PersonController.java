@@ -4,40 +4,60 @@ package com.janusz.Controller;
 import com.janusz.Entity.Person;
 import com.janusz.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 
-@RestController
-//@RequestMapping("/people")
+@Controller
 public class PersonController {
 
     @Autowired
     private PersonService personService;
 
-    @GetMapping(value = "/people")
-    public String getAllPersons(ModelMap model){
-
-        return personService.getAllPersons().toString();
+    @GetMapping(value = "/all")
+    public String getAllPersons(HttpServletRequest request){
+        request.setAttribute("people", personService.getAllPersons());
+        request.setAttribute("mode", "MODE_ALL");
+        return "index";
     }
 
-
-    @GetMapping("/people/{id}")
-    public Person getPerson(@PathVariable Long id){
-        return personService.getPersonById(id);
+    @GetMapping(value = "/newPerson")
+    public String newPerson(HttpServletRequest request){
+        request.setAttribute("mode", "MODE_NEW");
+        return "index";
     }
 
-    @GetMapping(value = "/addPerson")
-    public void addPerson(@RequestParam Long pesel, @RequestParam String name,
-                          @RequestParam String surname, @RequestParam boolean sex){
-        Person person = new Person(name, surname, pesel, sex, new Date());
-        personService.addPerson(person);
+    @PostMapping(value = "/savePerson")
+    public String savePerson(@ModelAttribute Person person, BindingResult result, HttpServletRequest request, HttpServletResponse response){
+        System.out.println("person.date="+request.getAttribute("person.date"));
+
+        try {
+            personService.savePerson(person);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("people", personService.getAllPersons());
+        request.setAttribute("mode", "MODE_ALL");
+        return "index";
+    }
+
+    @GetMapping(value = "/updatePerson")
+    public String updatePerson(@RequestParam Long id, HttpServletRequest request){
+        request.setAttribute("person", personService.getPersonById(id));
+        request.setAttribute("mode", "MODE_UPDATE");
+        return "index";
     }
 
     @GetMapping(value = "/deletePerson")
-    public void deletePerson(@RequestParam Long id){
+    public String deletePerson(@RequestParam Long id, HttpServletRequest request){
         personService.deletePerson(id);
+        request.setAttribute("people", personService.getAllPersons());
+        request.setAttribute("mode", "MODE_ALL");
+        return "index";
     }
 
 }

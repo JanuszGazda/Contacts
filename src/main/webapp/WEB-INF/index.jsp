@@ -5,114 +5,130 @@
 
 <html>
 <head>
-    <meta charset="utf-8">
+
+	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache"> 
+    <meta http-equiv="Cache-Control" content="no-cache"> 
     <meta http-equiv="Expires" content="Sat, 01 Dec 2001 00:00:00 GMT">
-
+    
     <title>Contacts | Home</title>
+     <link href="static/css/style.css" rel="stylesheet">
 
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/style.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="static/js/html5shiv.min.js"></script>
-    <script src="static/js/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
 
-<div role="navigation">
-    <div class="navbar navbar-inverse">
-        <a href="/" class="navbar-brand">Home</a>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="new-task">Nowa osoba</a></li>
-                <li><a href="all-tasks">Lista</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+	<div role="navigation">
+		<div class="navbar navbar-inverse">
+			<a href="/" class="navbar-brand">Hello</a>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="newPerson">Nowy kontakt</a></li>
+					<li><a href="all">Kontakty</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<c:choose>
+		<c:when test="${mode == 'MODE_HOME'}">
+			<div class="container" id="homeDiv">
+				<div class="jumbotron text-center">
+					<h1>Witaj w kontaktach</h1>
+				</div>
+			</div>
+		</c:when>
+		<c:when test="${mode == 'MODE_ALL'}">
+			<div class="container text-center" id="tasksDiv">
+				<h3>Moje kontakty</h3>
+				<hr>
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered text-left">
+						<thead>
+							<tr>
+								<th>Imie</th>
+								<th>Nazwisko</th>
+								<th>Plec</th>
+								<th>Data urodzenia</th>
+								<th>Pesel</th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="person" items="${people}">
+								<tr>
+									<td>${person.name}</td>
+									<td>${person.surname}</td>
+									<td>${person.sex}</td>
+									<td>${person.date}</td>
+									<td>${person.pesel}</td>
+									<td><a href="updatePerson?id=${person.pesel}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+									<td><a href="deletePerson?id=${person.pesel}"><span class="glyphicon glyphicon-trash"></span></a></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</c:when>
+		<c:when test="${mode == 'MODE_NEW' || mode == 'MODE_UPDATE'}">
+		
+			<div class="container text-center">
+				<h3>Zarzadzaj</h3>
+				<hr>
+				<form class="form-horizontal" method="POST" action="savePerson">
+					<input type="hidden" name="id" value="${person.pesel}"/>
+					<div class="form-group">
+						<label class="control-label col-md-3">Name</label>
+						<div class="col-md-7">
+							<input type="text" required="required" pattern="[A-Za-z]+{,25}" class="form-control" name="name" value="${person.name}"/>
+						</div>				
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3">Surname</label>
+						<div class="col-md-7">
+							<input type="text" required="required" pattern="[A-Za-z]+{,25}" class="form-control" name="surname" value="${person.surname}"/>
+						</div>				
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3">Plec</label>
+						<div class="col-md-7">
+							<input type="radio" class="col-sm-1" name="finished" value="true"/>
+							<div class="col-sm-1">K</div>
+							<input type="radio" class="col-sm-1" name="finished" value="false" checked/>
+							<div class="col-sm-1">M</div>
+						</div>				
+					</div>
+					<!--
+					<div class="form-group">
+						<label class="control-label col-md-3">Data urodzenia</label>
+						<div class="col-md-7">
+							<input type="text" required="required" class="form-control" name="date" value="${person.date}"/>
+						</div>
+					</div>
+					-->
+					<div class="form-group">
+						<label class="control-label col-md-3">Pesel</label>
+						<div class="col-md-7">
+							<input type="text" required="required" pattern="[0-9]{11}" class="form-control" name="pesel" value="${person.pesel}"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" value="Save"/>
+					</div>
+				</form>
+			</div>
+		</c:when>		
+	</c:choose>
 
-<c:choose>
-    <c:when test="${mode == 'MODE_HOME'}">
-        <div class="container" id="homeDiv">
-            <div class="jumbotron text-center">
-                <h1>Welcome to Task Manager</h1>
-            </div>
-        </div>
-    </c:when>
-    <c:when test="${mode == 'MODE_TASKS'}">
-        <div class="container text-center" id="tasksDiv">
-            <h3>My Tasks</h3>
-            <hr>
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered text-left">
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Date Created</th>
-                        <th>Finished</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="task" items="${tasks}">
-                        <tr>
-                            <td>${task.id}</td>
-                            <td>${task.name}</td>
-                            <td>${task.description}</td>
-                            <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${task.dateCreated}"/></td>
-                            <td>${task.finished}</td>
-                            <td><a href="update-task?id=${task.id}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                            <td><a href="delete-task?id=${task.id}"><span class="glyphicon glyphicon-trash"></span></a></td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </c:when>
-    <c:when test="${mode == 'MODE_NEW' || mode == 'MODE_UPDATE'}">
-        <div class="container text-center">
-            <h3>Manage Task</h3>
-            <hr>
-            <form class="form-horizontal" method="POST" action="save-task">
-                <input type="hidden" name="id" value="${task.id}"/>
-                <div class="form-group">
-                    <label class="control-label col-md-3">Name</label>
-                    <div class="col-md-7">
-                        <input type="text" class="form-control" name="name" value="${task.name}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3">Description</label>
-                    <div class="col-md-7">
-                        <input type="text" class="form-control" name="description" value="${task.description}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-3">Finished</label>
-                    <div class="col-md-7">
-                        <input type="radio" class="col-sm-1" name="finished" value="true"/>
-                        <div class="col-sm-1">Yes</div>
-                        <input type="radio" class="col-sm-1" name="finished" value="false" checked/>
-                        <div class="col-sm-1">No</div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Save"/>
-                </div>
-            </form>
-        </div>
-    </c:when>
-</c:choose>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<script src="static/js/jquery-1.11.1.min.js"></script>
-<script src="static/js/bootstrap.min.js"></script>
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.janusz.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,10 +28,10 @@ public class Person {
     private Set<Contact> contact = new HashSet<>();
 
     @Column(name="date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    //@Temporal(TemporalType.DATE)
+    private String date;
 
-    public Person(String name, String surname, Long pesel, boolean sex, Date date){
+    public Person(String name, String surname, Long pesel, boolean sex, String date){
         this.name=name;
         this.surname=surname;
         this.pesel=pesel;
@@ -72,11 +74,11 @@ public class Person {
         this.sex = sex;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
