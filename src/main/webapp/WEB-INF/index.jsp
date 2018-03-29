@@ -60,11 +60,19 @@
 								<tr>
 									<td>${person.name}</td>
 									<td>${person.surname}</td>
-									<td>${person.sex}</td>
+									<td>
+										<c:choose>
+											<c:when test="${person.sex == true}">Kobieta</c:when>
+											<c:when test="${person.sex == false}">Mezczyzna</c:when>
+										</c:choose>
+									</td>
 									<td>${person.date}</td>
 									<td>${person.pesel}</td>
 									<td><a href="updatePerson?id=${person.pesel}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 									<td><a href="deletePerson?id=${person.pesel}"><span class="glyphicon glyphicon-trash"></span></a></td>
+									<tr>
+										<td></td>
+									</tr>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -73,20 +81,19 @@
 			</div>
 		</c:when>
 		<c:when test="${mode == 'MODE_NEW' || mode == 'MODE_UPDATE'}">
-		
 			<div class="container text-center">
 				<h3>Zarzadzaj</h3>
 				<hr>
 				<form class="form-horizontal" method="POST" action="savePerson">
 					<input type="hidden" name="id" value="${person.pesel}"/>
 					<div class="form-group">
-						<label class="control-label col-md-3">Name</label>
+						<label class="control-label col-md-3">Imie</label>
 						<div class="col-md-7">
 							<input type="text" required="required" pattern="[A-Za-z]+{,25}" class="form-control" name="name" value="${person.name}"/>
 						</div>				
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">Surname</label>
+						<label class="control-label col-md-3">Nazwisko</label>
 						<div class="col-md-7">
 							<input type="text" required="required" pattern="[A-Za-z]+{,25}" class="form-control" name="surname" value="${person.surname}"/>
 						</div>				
@@ -94,20 +101,23 @@
 					<div class="form-group">
 						<label class="control-label col-md-3">Plec</label>
 						<div class="col-md-7">
-							<input type="radio" class="col-sm-1" name="finished" value="true"/>
+							<input type="radio" class="col-sm-1" name="sex" value="true" required/>
 							<div class="col-sm-1">K</div>
-							<input type="radio" class="col-sm-1" name="finished" value="false" checked/>
+							<input type="radio" class="col-sm-1" name="sex" value="false"/>
 							<div class="col-sm-1">M</div>
 						</div>				
 					</div>
-					<!--
 					<div class="form-group">
 						<label class="control-label col-md-3">Data urodzenia</label>
 						<div class="col-md-7">
-							<input type="text" required="required" class="form-control" name="date" value="${person.date}"/>
+							<input type="text" required="required" placeholder="YYYY-MM-DD" class="form-control" name="date"
+								   <c:choose>
+								   		<c:when test="${mode == 'MODE_NEW'}">value="<fmt:formatDate value="${person.date}" pattern="yyyy-MM-dd" />"</c:when>
+								   		<c:when test="${mode == 'MODE_UPDATE'}"> value="${person.date}"</c:when>
+								   </c:choose>
+							/>
 						</div>
 					</div>
-					-->
 					<div class="form-group">
 						<label class="control-label col-md-3">Pesel</label>
 						<div class="col-md-7">

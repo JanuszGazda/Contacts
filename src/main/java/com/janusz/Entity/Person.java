@@ -24,11 +24,13 @@ public class Person {
     @Column(name="sex")
     private boolean sex;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person",
+                fetch = FetchType.LAZY,
+                cascade = CascadeType.ALL)
     private Set<Contact> contact = new HashSet<>();
 
     @Column(name="date")
-    //@Temporal(TemporalType.DATE)
+    //Temporal(TemporalType.DATE)
     private String date;
 
     public Person(String name, String surname, Long pesel, boolean sex, String date){
