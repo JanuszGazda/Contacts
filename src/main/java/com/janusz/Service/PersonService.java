@@ -31,17 +31,12 @@ public class PersonService {
         return personRepository.findOne(id);
     }
 
-    public void savePerson(Person person) throws ParseException {
+    public void savePerson(Person person){
         personRepository.save(person);
     }
 
     public void deletePerson(Long id){
         personRepository.delete(id);
     }
-
-    public Date formatDate(String date) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-    }
-
 
 }

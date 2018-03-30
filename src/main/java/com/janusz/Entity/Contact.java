@@ -1,57 +1,69 @@
 package com.janusz.Entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "contact")
 public class Contact {
 
-    @ManyToOne
-    private Person person;
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id",unique=true, nullable = false)
     private Long id;
 
-    private int phoneNumber;
-    private String email, address;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pesel", nullable = false)
+    private Person person;
+
+    //1==E-mail 2==Telefon  3==Adres
+    @NotNull
+    private int type;
+
+    @Column(name = "contact")
+    private String contact;
 
     private Contact(){}
 
-    public Contact(final Person person, final int phoneNumber, final String email, final String address){
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.address = address;
+    public Contact(final Person person, final int type, final String contact){
+        this.type = type;
+        this.contact = contact;
     }
 
-    public Long getId(){
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public void setPerson(Person person){
+        this.person=person;
+    }
+
+    public Person getPerson(){
+        return person;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public int getPhoneNumber() {
-        return phoneNumber;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public Long getPesel(){
+        return this.person.getPesel();
     }
 }

@@ -3,9 +3,7 @@ package com.janusz.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 
@@ -24,10 +22,10 @@ public class Person {
     @Column(name="sex")
     private boolean sex;
 
-    @OneToMany(mappedBy = "person",
-                fetch = FetchType.LAZY,
+    @OneToMany( fetch = FetchType.LAZY,
                 cascade = CascadeType.ALL)
-    private Set<Contact> contact = new HashSet<>();
+    @JoinColumn(name = "person_id")
+    private List<Contact> contacts = new ArrayList<>();
 
     @Column(name="date")
     //Temporal(TemporalType.DATE)
@@ -43,6 +41,14 @@ public class Person {
     }
 
     public Person(){}
+
+    public Long getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(Long pesel) {
+        this.pesel = pesel;
+    }
 
     public String getName() {
         return name;
@@ -60,20 +66,20 @@ public class Person {
         this.surname = surname;
     }
 
-    public Long getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(Long pesel) {
-        this.pesel = pesel;
-    }
-
     public boolean isSex() {
         return sex;
     }
 
     public void setSex(boolean sex) {
         this.sex = sex;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 
     public String getDate() {
@@ -84,4 +90,7 @@ public class Person {
         this.date = date;
     }
 
+    public void addContact( Contact contact){
+        this.contacts.add(contact);
+    }
 }

@@ -2,6 +2,7 @@ package com.janusz.Controller;
 
 
 import com.janusz.Entity.Person;
+import com.janusz.Service.ContactService;
 import com.janusz.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,8 +22,12 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+    @Autowired
+    private ContactService contactService;
+
     @GetMapping(value = "/all")
     public String getAllPersons(HttpServletRequest request){
+        System.out.println(personService.getAllPersons().toString());
         request.setAttribute("people", personService.getAllPersons());
         request.setAttribute("mode", "MODE_ALL");
         return "index";
@@ -36,14 +40,8 @@ public class PersonController {
     }
 
     @PostMapping(value = "/savePerson")
-    public String savePerson(@ModelAttribute Person person, BindingResult result, HttpServletRequest request, HttpServletResponse response){
-        System.out.println("person.date="+request.getAttribute("person.date"));
-
-        try {
-            personService.savePerson(person);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public String savePerson(@ModelAttribute Person person, BindingResult result, HttpServletRequest request){
+        personService.savePerson(person);
         request.setAttribute("people", personService.getAllPersons());
         request.setAttribute("mode", "MODE_ALL");
         return "index";

@@ -53,10 +53,11 @@
 								<th>Pesel</th>
 								<th></th>
 								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="person" items="${people}">
+							<c:forEach var="person"  items="${people}">
 								<tr>
 									<td>${person.name}</td>
 									<td>${person.surname}</td>
@@ -68,11 +69,9 @@
 									</td>
 									<td>${person.date}</td>
 									<td>${person.pesel}</td>
+									<td><a href="allContacts?id=${person.pesel}"><span class="glyphicon glyphicon-align-justify"></span></a></td>
 									<td><a href="updatePerson?id=${person.pesel}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 									<td><a href="deletePerson?id=${person.pesel}"><span class="glyphicon glyphicon-trash"></span></a></td>
-									<tr>
-										<td></td>
-									</tr>
 								</tr>
 							</c:forEach>
 						</tbody>
