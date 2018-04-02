@@ -1,4 +1,6 @@
 # Contacts
-Java, Spring, JPA, MySQL application for manipulating contacts of people
+Java, Spring Boot, JPA, JSP, MySQL application for manipulating contacts of people
 
 Application in development...
+
+Todo: inputs validation, tests, db generation
