@@ -2,6 +2,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
@@ -49,12 +50,12 @@
                         <tr>
                             <td>
                                 <c:choose>
-                                    <c:when test="${contact.type == 1}">E-mail: ${contact.contact}</c:when>
-                                    <c:when test="${contact.type == 2}">Telefon: ${contact.contact}</c:when>
-                                    <c:when test="${contact.type == 3}">Adres zamieszkania: ${contact.contact}</c:when>
+                                    <c:when test="${contact.type == 1}">E-mail: ${contact.value}</c:when>
+                                    <c:when test="${contact.type == 2}">Telefon: ${contact.value}</c:when>
+                                    <c:when test="${contact.type == 3}">Adres zamieszkania: ${contact.value}</c:when>
                                 </c:choose>
                             </td>
-                            <td><a href="updateContact?contactId=${contact.id}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td><a href="updateContact?contactId=${contact.id}&personId=${contact.person.pesel}"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td><a href="deleteContact?contactId=${contact.id}&personId=${contact.person.pesel}"><span class="glyphicon glyphicon-trash"></span></a></td>
                         </tr>
                     </c:forEach>
@@ -63,26 +64,31 @@
             </div>
         </div>
     </c:when>
-    <c:when test="${mode == 'MODE_NEW_CONTACT' || 'MODE_UPDATE_CONTACT'}">
+    <c:when test="${mode == 'MODE_NEW_CONTACT' || mode == 'MODE_UPDATE_CONTACT'}">
         <div class="container text-center">
             <h3>Zarzadzaj</h3>
             <hr>
             <form class="form-horizontal" method="POST" action="saveContact?personId=${personId}">
                 <input type="hidden" name="id" value="${contact.id}"/>
                 <div class="form-group">
-                    <label class="control-label col-md-3">Typ</label>
-                    <div class="col-md-7">
-                        <input type="text" required="required" pattern="[A-Za-z]+{,25}" class="form-control" name="name" value="${contact.type}"/>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="control-label col-md-3">Wartosc</label>
                     <div class="col-md-7">
-                        <input type="text" required="required" pattern="[A-Za-z]+{,25}" class="form-control" name="surname" value="${contact.contact}"/>
+                        <input type="text" required="required" pattern="[A-Za-z]+{,25}" class="form-control" name="value" value="${contact.value}"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Zapisz"/>
+                    <label class="control-label col-md-3">Typ</label>
+                    <div class="col-md-7">
+                        <input type="radio" class="col-sm-1" name="type" value="1" required/>
+                        <div class="col-sm-1">E-mail</div>
+                        <input type="radio" class="col-sm-1" name="type" value="2"/>
+                        <div class="col-sm-1">Telefon</div>
+                        <input type="radio" class="col-sm-1" name="type" value="3"/>
+                        <div class="col-sm-1">Adres</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Save"/>
                 </div>
             </form>
         </div>

@@ -22,9 +22,6 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @Autowired
-    private ContactService contactService;
-
     @GetMapping(value = "/all")
     public String getAllPersons(HttpServletRequest request){
         System.out.println(personService.getAllPersons().toString());
@@ -48,15 +45,15 @@ public class PersonController {
     }
 
     @GetMapping(value = "/updatePerson")
-    public String updatePerson(@RequestParam Long id, HttpServletRequest request){
-        request.setAttribute("person", personService.getPersonById(id));
+    public String updatePerson(@RequestParam Long personId, HttpServletRequest request){
+        request.setAttribute("person", personService.getPersonById(personId));
         request.setAttribute("mode", "MODE_UPDATE");
         return "index";
     }
 
     @GetMapping(value = "/deletePerson")
-    public String deletePerson(@RequestParam Long id, HttpServletRequest request){
-        personService.deletePerson(id);
+    public String deletePerson(@RequestParam Long personId, HttpServletRequest request){
+        personService.deletePerson(personId);
         request.setAttribute("people", personService.getAllPersons());
         request.setAttribute("mode", "MODE_ALL");
         return "index";

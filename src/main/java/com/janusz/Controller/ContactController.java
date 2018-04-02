@@ -7,23 +7,19 @@ import com.janusz.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
 public class ContactController {
 
     @Autowired
-    PersonService personService;
+    private PersonService personService;
 
     @Autowired
-    ContactService contactService;
+    private ContactService contactService;
 
     @GetMapping(value = "/newContact")
     public String newContact(@RequestParam Long personId, HttpServletRequest request){
@@ -33,22 +29,23 @@ public class ContactController {
     }
 
     @PostMapping(value = "/saveContact")
-    public String saveContact(@ModelAttribute Contact contact, BindingResult result, @RequestParam Long id, HttpServletRequest request){
+    public String saveContact(@ModelAttribute Contact contact, BindingResult result, @RequestParam Long personId, HttpServletRequest request){
 
         Person person = personService.getPersonById(Long.parseLong(request.getParameter("personId")));
         contact.setPerson(person);
-        System.out.println(request.getParameter("personId"));
         contactService.saveContact(contact);
         List<Contact> contacts = person.getContacts();
+        request.setAttribute("personId", personId);
         request.setAttribute("contacts", contacts);
         request.setAttribute("mode", "MODE_ALL_CONTACTS");
         return "contacts";
     }
 
     @GetMapping(value = "/updateContact")
-    public String updateContact(@RequestParam Long contactId, HttpServletRequest request){
+    public String updateContact(@RequestParam Long contactId, HttpServletRequest request, @RequestParam Long personId){
         request.setAttribute("contact", contactService.getContactById(contactId));
         request.setAttribute("mode", "MODE_UPDATE_CONTACT");
+        request.setAttribute("personId", personId);
         return "contacts";
     }
 
@@ -58,20 +55,22 @@ public class ContactController {
         List<Contact> contacts = person.getContacts();
         request.setAttribute("contacts", contacts);
         request.setAttribute("mode", "MODE_ALL_CONTACTS");
+        request.setAttribute("personId", personId);
 
         contactService.deleteContact(contactId);
         return "contacts";
     }
 
     @GetMapping(value = "/allContacts")
-    public String personsContacts(@RequestParam Long id, HttpServletRequest request){
+    public String personsContacts(@RequestParam Long personId, HttpServletRequest request){
 
-        Person person = personService.getPersonById(id);
+        Person person = personService.getPersonById(personId);
         List<Contact> contacts = person.getContacts();
-        request.setAttribute("personId", id);
+        request.setAttribute("personId", personId);
         request.setAttribute("contacts", contacts);
         request.setAttribute("mode", "MODE_ALL_CONTACTS");
         return "contacts";
     }
+
 
 }

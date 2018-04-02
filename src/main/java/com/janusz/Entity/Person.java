@@ -1,12 +1,9 @@
 package com.janusz.Entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-
 public class Person {
 
     @Id
@@ -22,9 +19,7 @@ public class Person {
     @Column(name="sex")
     private boolean sex;
 
-    @OneToMany( fetch = FetchType.LAZY,
-                cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Contact> contacts = new ArrayList<>();
 
     @Column(name="date")

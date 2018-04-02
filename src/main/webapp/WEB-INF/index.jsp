@@ -69,9 +69,9 @@
 									</td>
 									<td>${person.date}</td>
 									<td>${person.pesel}</td>
-									<td><a href="allContacts?id=${person.pesel}"><span class="glyphicon glyphicon-align-justify"></span></a></td>
-									<td><a href="updatePerson?id=${person.pesel}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-									<td><a href="deletePerson?id=${person.pesel}"><span class="glyphicon glyphicon-trash"></span></a></td>
+									<td><a href="allContacts?personId=${person.pesel}"><span class="glyphicon glyphicon-align-justify"></span></a></td>
+									<td><a href="updatePerson?personId=${person.pesel}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+									<td><a href="deletePerson?personId=${person.pesel}"><span class="glyphicon glyphicon-trash"></span></a></td>
 								</tr>
 							</c:forEach>
 						</tbody>

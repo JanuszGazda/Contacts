@@ -14,21 +14,20 @@ public class Contact {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pesel", nullable = false)
     private Person person;
 
     //1==E-mail 2==Telefon  3==Adres
     @NotNull
     private int type;
 
-    @Column(name = "contact")
-    private String contact;
+    @Column(name = "value")
+    private String value;
 
     private Contact(){}
 
-    public Contact(final Person person, final int type, final String contact){
+    public Contact(final Person person, final int type, final String value){
         this.type = type;
-        this.contact = contact;
+        this.value = value;
     }
 
     public int getType() {
@@ -39,12 +38,12 @@ public class Contact {
         this.type = type;
     }
 
-    public String getContact() {
-        return contact;
+    public String getValue() {
+        return value;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public void setPerson(Person person){
