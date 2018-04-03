@@ -7,6 +7,7 @@ import com.janusz.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +38,13 @@ public class PersonController {
     }
 
     @PostMapping(value = "/savePerson")
-    public String savePerson(@ModelAttribute Person person, BindingResult result, HttpServletRequest request){
-        personService.savePerson(person);
-        request.setAttribute("people", personService.getAllPersons());
-        request.setAttribute("mode", "MODE_ALL");
+    public String savePerson(@ModelAttribute Person person, BindingResult result,
+                             HttpServletRequest request, ModelMap model){
+
+        //if(personService.getPersonById(person.getPesel())==null) {
+            personService.savePerson(person);
+            request.setAttribute("people", personService.getAllPersons());
+            request.setAttribute("mode", "MODE_ALL");
         return "index";
     }
 

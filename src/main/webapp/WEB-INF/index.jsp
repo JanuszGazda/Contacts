@@ -83,6 +83,7 @@
 			<div class="container text-center">
 				<h3>Zarzadzaj</h3>
 				<hr>
+				<h4>${errorDuplicate}</h4>
 				<form class="form-horizontal" method="POST" action="savePerson">
 					<input type="hidden" name="id" value="${person.pesel}"/>
 					<div class="form-group">
@@ -109,7 +110,7 @@
 					<div class="form-group">
 						<label class="control-label col-md-3">Data urodzenia</label>
 						<div class="col-md-7">
-							<input type="text" required="required" placeholder="YYYY-MM-DD" class="form-control" name="date"
+							<input type="text" required="required" pattern="^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$" placeholder="YYYY-MM-DD" class="form-control" name="date" title="Wprowadz date w formacie YYYY-MM-DD"
 								   <c:choose>
 								   		<c:when test="${mode == 'MODE_NEW'}">value="<fmt:formatDate value="${person.date}" pattern="yyyy-MM-dd" />"</c:when>
 								   		<c:when test="${mode == 'MODE_UPDATE'}"> value="${person.date}"</c:when>

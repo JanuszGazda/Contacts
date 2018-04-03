@@ -34,8 +34,12 @@ public class ContactController {
         Person person = personService.getPersonById(Long.parseLong(request.getParameter("personId")));
         contact.setPerson(person);
         contactService.saveContact(contact);
-        List<Contact> contacts = person.getContacts();
-        request.setAttribute("personId", personId);
+        List<Contact> contacts = null;
+        try{
+            contacts = person.getContacts();
+        }catch (NullPointerException ex){
+            //logs...
+        }        request.setAttribute("personId", personId);
         request.setAttribute("contacts", contacts);
         request.setAttribute("mode", "MODE_ALL_CONTACTS");
         return "contacts";
@@ -52,7 +56,12 @@ public class ContactController {
     @GetMapping(value = "/deleteContact")
     public String deleteContact(@RequestParam Long contactId, @RequestParam Long personId, HttpServletRequest request){
         Person person = personService.getPersonById(personId);
-        List<Contact> contacts = person.getContacts();
+        List<Contact> contacts = null;
+        try{
+            contacts = person.getContacts();
+        }catch (NullPointerException ex){
+            //logs...
+        }
         request.setAttribute("contacts", contacts);
         request.setAttribute("mode", "MODE_ALL_CONTACTS");
         request.setAttribute("personId", personId);
@@ -65,7 +74,12 @@ public class ContactController {
     public String personsContacts(@RequestParam Long personId, HttpServletRequest request){
 
         Person person = personService.getPersonById(personId);
-        List<Contact> contacts = person.getContacts();
+        List<Contact> contacts = null;
+        try{
+            contacts = person.getContacts();
+        }catch (NullPointerException ex){
+            //logs...
+        }
         request.setAttribute("personId", personId);
         request.setAttribute("contacts", contacts);
         request.setAttribute("mode", "MODE_ALL_CONTACTS");
