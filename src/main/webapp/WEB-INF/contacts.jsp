@@ -14,7 +14,6 @@
     <meta http-equiv="Expires" content="Sat, 01 Dec 2001 00:00:00 GMT">
 
     <title>Lista kontaktów</title>
-    <link href="static/css/style.css" rel="stylesheet">
 
 </head>
 <body>
@@ -94,6 +93,19 @@
         </div>
     </c:when>
 </c:choose>
+
+    <div id="footer" style="position: absolute;
+                                right: 0;
+                                bottom: 0;
+                                left: 0;
+                                padding: 1rem;
+                                background-color: #efefef;
+                                text-align: center; ">
+        <p>Made by: Janusz Gazda</p>
+        <p>Contact information: <a href="mailto:janusz.gazda2@gmail.com">
+            janusz.gazda2@gmail.com</a>.</p>
+    </div>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 

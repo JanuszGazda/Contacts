@@ -25,7 +25,6 @@ public class PersonController {
 
     @GetMapping(value = "/all")
     public String getAllPersons(HttpServletRequest request){
-        System.out.println(personService.getAllPersons().toString());
         request.setAttribute("people", personService.getAllPersons());
         request.setAttribute("mode", "MODE_ALL");
         return "index";
@@ -41,10 +40,25 @@ public class PersonController {
     public String savePerson(@ModelAttribute Person person, BindingResult result,
                              HttpServletRequest request, ModelMap model){
 
-        //if(personService.getPersonById(person.getPesel())==null) {
+        if(personService.getPersonById(person.getPesel())==null) {
             personService.savePerson(person);
             request.setAttribute("people", personService.getAllPersons());
             request.setAttribute("mode", "MODE_ALL");
+        }else {
+            request.setAttribute("errorDuplicate", "Nie mozna dodac dwoch kontaktow o identycznym nr Pesel");
+            request.setAttribute("mode", "MODE_NEW");
+            request.setAttribute("people", personService.getAllPersons());
+        }
+        return "index";
+    }
+
+    @PostMapping(value = "/saveUpdatedPerson")
+    public String saveUpdatedPerson(@ModelAttribute Person person, BindingResult result,
+                             HttpServletRequest request, ModelMap model){
+
+        personService.savePerson(person);
+        request.setAttribute("people", personService.getAllPersons());
+        request.setAttribute("mode", "MODE_ALL");
         return "index";
     }
 
